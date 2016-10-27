@@ -1,0 +1,198 @@
+import React from 'react';
+import AceEditor from 'react-ace';
+import brace from 'brace';
+import $ from 'jquery';
+
+import 'brace/mode/c_cpp';
+import 'brace/theme/monokai';
+import 'brace/theme/github';
+
+import CompilerControls from './compiler-controls';
+import Output from './output';
+import GccOutputParser from '../gcc-output-parser';
+
+export default class CodeEditor extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      text: this.props.text,
+      term: this.props.term,
+			toggled: false,
+      childOutput: '',
+      // clearOutput: false
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmission = this.handleSubmission.bind(this);
+		this.toggleEdit = this.toggleEdit.bind(this);
+    this.addCompilingLabel = this.addCompilingLabel.bind(this);
+    this.addOutputToDoc = this.addOutputToDoc.bind(this);
+    this.handleQuit = this.handleQuit.bind(this);
+    // this.clearChildOutput = this.clearChildOutput.bind(this);
+    // this.setClear = this.setClear.bind(this);
+  }
+
+  handleChange(newValue) {
+    this.state = {
+      text: newValue,
+      term: this.state.term,
+			toggled: this.state.toggled,
+      childOutput: this.state.childOutput,
+      // clearOutput: this.state.clearOutput
+    };
+  }
+
+  addCompilingLabel() {
+    this.state.childOutput += '\nCompiling main...\n';
+    this.forceUpdate();
+  }
+
+  addOutputToDoc(output) {
+    let text = '\nPROGRAM OUTPUT:\n';
+    text += '--------------------------\n';
+    text += output + '\n';
+    text += '--------------------------';
+
+    this.state.childOutput += text;
+    this.forceUpdate();
+  }
+
+  // clearChildOutput() {
+  //   this.state.childOutput = 'empty';
+  //   this.forceUpdate();
+  // }
+
+  // setClear(newValue) {
+  //   console.log('Changing to', newValue);
+  //   this.state = {
+  //     text: newValue,
+  //     term: this.state.term,
+	// 		toggled: this.state.toggled,
+  //     childOutput: this.state.childOutput,
+  //     // clearOutput: newValue
+  //   }
+  // }
+
+  handleSubmission() {
+    // if (this.state.clearOutput) {
+    //   this.clearChildOutput();
+    // }
+
+    let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\s*((.|\n)*)\s*echo \$\?/;
+    let gccExitCodeCaptureRe = /GCC_EXIT_CODE: (\d+)/;
+
+    this.state.term.terms[0].SetCharReceiveListener(c => {
+      this.state.output += c;
+      const regexMatchArr = gccOutputCaptureRe.exec(this.state.output);
+      if (regexMatchArr) {
+        const gccOutput = regexMatchArr[1];
+        let parser = new GccOutputParser();
+        const gccExitCode = parseInt(gccExitCodeCaptureRe.exec(gccOutput)[1], 10);
+        const errors = parser.parse(gccOutput);
+        // const annotations = parser.getErrorAnnotations(errors);
+
+        let result = {
+          exitCode: gccExitCode,
+          annotations: errors,
+          gccOutput: gccOutput,
+          total: regexMatchArr
+        };
+
+        console.log(result);
+
+        if (errors.length > 0) {
+          errors.forEach(e => this.addOutputToDoc(
+            'ERROR: ' + e.text + ' at line ' + e.row + ' column ' + e.column
+          ));
+        } else {
+          this.addOutputToDoc(regexMatchArr[2]);
+        }
+        this.state.output = '';
+      }
+    });
+
+    let text = this.state.text;
+    let buf = new Buffer(text);
+    let jor1kFS = this.state.term.fs;
+
+    jor1kFS.MergeBinaryFile('home/user/main.c', buf);
+    this.addCompilingLabel();
+
+    let cmd = "clear && gcc -std=c99 main.c -o main\n";
+    const other = 'echo \\#\\#\\#GCC_COMPILE\\#\\#\\#;clear;pwd;' + cmd + ' echo GCC_EXIT_CODE: $?; echo \\#\\#\\#GCC_COMPILE_FINISHED\\#\\#\\#\n' + 'clear && ./main\n\necho $?\n';
+
+    const data = other.split('').map(c => c.charCodeAt(0) >>> 0);
+
+    this.state.term.message.Send('tty0', data);
+    this.state.term.FocusTerm('tty0');
+  }
+
+	toggleEdit() {
+		this.state = {
+			text: this.state.text,
+			term: this.state.term,
+			toggled: !this.state.toggled,
+      childOutput: this.state.childOutput,
+      clearOutput: this.state.clearOutput
+		};
+
+		this.forceUpdate();
+	}
+
+  handleQuit() {
+    let quitCmd = '\x03';
+    const data = quitCmd.split('').map(c => c.charCodeAt(0) >>> 0);
+    this.state.term.message.Send('tty0', data);
+  }
+
+  render() {
+    return (
+      <div className="editor">
+        <div className="code-editor">
+          <AceEditor
+            name={this.props.id}
+            mode="c_cpp"
+            theme="github"
+            height={this.props.height}
+            width={this.props.width}
+            onChange={this.handleChange}
+            value={this.state.text}
+  					readOnly={!this.state.toggled} />
+        </div>
+        <Output
+          output={this.state.childOutput}
+          setClear={this.setClear} />
+        <CompilerControls
+          onSubmit={this.handleSubmission}
+					toggleEdit={this.toggleEdit}
+          handleQuit={this.handleQuit} />
+      </div>
+    );
+  }
+}
+
+// TODO
+
+// simple-ish stuff ----
+// user input
+// copy to clipboard
+// submit -> execute
+// skipping boilerplate & adding on edit&go
+// - preamble, postamble etc.
+// - live code attributes
+// clear, append output options
+// filename & contents
+// multiple submits from different blocks
+
+
+// hardcore stuff ----
+// reduce preconfigured ram for jor1k
+// multiple languages
+// kill if hardware slow (running on phone)
+// fix web worker
+// auto check for syntax
+
+// paper stuff ----
+// gitbook
+// user studies
