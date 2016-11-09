@@ -40,9 +40,10 @@ export default class CodeEditor extends React.Component {
 
   addOutputToDoc = (output) => {
     let text = '\nPROGRAM OUTPUT:\n';
-    text += '--------------------------\n';
+    let border = Array(Math.max(28, output.length - 28)).join('-');
+    text += border + '\n';
     text += output + '\n';
-    text += '--------------------------';
+    text += border;
 
     this.setState((prevState, props) => {
       return { childOutput: prevState.childOutput + text };
