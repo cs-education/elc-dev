@@ -54,12 +54,6 @@ export default class CodeEditor extends React.Component {
     this.setState({ childOutput: '' });
   }
 
-  toggleClear = () => {
-    this.setState((prevState, props) => {
-      return { clearOutput: !prevState.clearOutput };
-    });
-  }
-
   handleCppCompile = () => {
     let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\s*((.|\n)*)\s*echo \$\?/;
     let gccExitCodeCaptureRe = /GCC_EXIT_CODE: (\d+)/;
@@ -157,6 +151,12 @@ export default class CodeEditor extends React.Component {
       this.setState({ language: newLanguage });
   }
 
+  toggleClear = () => {
+    this.setState((prevState, props) => {
+      return { clearOutput: !prevState.clearOutput };
+    });
+  }
+
   render() {
     return (
       <div className="editor">
@@ -194,7 +194,6 @@ export default class CodeEditor extends React.Component {
 // skipping boilerplate & adding on edit&go
 // - preamble, postamble etc.
 // - live code attributes
-// clear, append output options
 // filename & contents
 // multiple submits from different blocks
 
