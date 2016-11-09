@@ -88,45 +88,45 @@ class GccOutputParser {
         return errors;
     }
 
-    // getErrorAnnotations(buildOutputStr) {
-    //     let workingDir = buildOutputStr.substring(0, buildOutputStr.indexOf('\n'));
-    //     if (workingDir.indexOf('/home/user') === 0) {
-    //         workingDir = workingDir.substring(10, workingDir.length);
-    //     } else {
-    //         workingDir = '';
-    //     }
-    //
-    //     const errors = this.parse(buildOutputStr);
-    //     return errors.map((error) => {
-    //         let aceAnnotationType;
-    //
-    //         // Determine the type of editor annotation. ace supports error, warning or info.
-    //         if (error.buildErrorType.toLowerCase().indexOf('error') !== -1) {
-    //             aceAnnotationType = 'error';
-    //         } else if (error.buildErrorType.toLowerCase().indexOf('warning') !== -1) {
-    //             aceAnnotationType = 'warning';
-    //         } else {
-    //             aceAnnotationType = 'info';
-    //         }
-    //
-    //         if (typeof error.type === 'undefined') {
-    //             // if the errors are not in program.c, invalidate the row and column so that
-    //             // the editor does not place an annotation
-    //             error.row = error.col = -1;
-    //         }
-    //
-    //         return {
-    //             // line numbers in ace start from zero
-    //             workingDir: workingDir,
-    //             row: error.row - 1,
-    //             col: error.col,
-    //             isBuildCmdError: (error.type === 'gcc') || (error.type === 'make'),
-    //             type: aceAnnotationType,
-    //             text: error.text,
-    //             file: error.file,
-    //         };
-    //     });
-    // }
+    getErrorAnnotations(buildOutputStr) {
+        let workingDir = buildOutputStr.substring(0, buildOutputStr.indexOf('\n'));
+        if (workingDir.indexOf('/home/user') === 0) {
+            workingDir = workingDir.substring(10, workingDir.length);
+        } else {
+            workingDir = '';
+        }
+
+        const errors = this.parse(buildOutputStr);
+        return errors.map((error) => {
+            let aceAnnotationType;
+
+            // Determine the type of editor annotation. ace supports error, warning or info.
+            if (error.buildErrorType.toLowerCase().indexOf('error') !== -1) {
+                aceAnnotationType = 'error';
+            } else if (error.buildErrorType.toLowerCase().indexOf('warning') !== -1) {
+                aceAnnotationType = 'warning';
+            } else {
+                aceAnnotationType = 'info';
+            }
+
+            if (typeof error.type === 'undefined') {
+                // if the errors are not in program.c, invalidate the row and column so that
+                // the editor does not place an annotation
+                error.row = error.col = -1;
+            }
+
+            return {
+                // line numbers in ace start from zero
+                workingDir: workingDir,
+                row: error.row - 1,
+                col: error.col,
+                isBuildCmdError: (error.type === 'gcc') || (error.type === 'make'),
+                type: aceAnnotationType,
+                text: error.text,
+                file: error.file,
+            };
+        });
+    }
 }
 
 export default GccOutputParser;

@@ -18,7 +18,7 @@ export default (props) => {
 
   return (
     <div className="compiler-buttons">
-      <button onClick={handleEdit}>{ props.toggled ? 'Lock Text' : 'Edit'}</button>
+      <button onClick={handleEdit}>{ props.toggled ? 'Lock Text' : 'Edit' }</button>
       <button onClick={handleSubmit}>Submit</button>
       <button onClick={handleQuit}>Quit Program</button>
     </div>

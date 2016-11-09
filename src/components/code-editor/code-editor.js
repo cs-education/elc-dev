@@ -22,44 +22,31 @@ export default class CodeEditor extends React.Component {
 			toggled: false,
       childOutput: '',
       language: 'c_cpp',
+      annotations: [],
       // clearOutput: false
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmission = this.handleSubmission.bind(this);
-		this.toggleEdit = this.toggleEdit.bind(this);
-    this.addCompilingLabel = this.addCompilingLabel.bind(this);
-    this.addOutputToDoc = this.addOutputToDoc.bind(this);
-    this.handleQuit = this.handleQuit.bind(this);
-    this.handleLanguageChange = this.handleLanguageChange.bind(this);
-    // this.clearChildOutput = this.clearChildOutput.bind(this);
-    // this.setClear = this.setClear.bind(this);
   }
 
-  handleChange(newValue) {
-    this.state = {
-      text: newValue,
-      term: this.state.term,
-			toggled: this.state.toggled,
-      childOutput: this.state.childOutput,
-      language: this.state.language,
-      // clearOutput: this.state.clearOutput
-    };
+  handleChange = (newValue) => {
+    this.setState({ text: newValue });
   }
 
-  addCompilingLabel() {
-    this.state.childOutput += '\nCompiling main...\n';
-    this.forceUpdate();
+  addCompilingLabel = () => {
+    let compileLabel = '\nCompiling main...\n';
+    this.setState((prevState, props) => {
+      return { childOutput: prevState.childOutput + compileLabel };
+    });
   }
 
-  addOutputToDoc(output) {
+  addOutputToDoc = (output) => {
     let text = '\nPROGRAM OUTPUT:\n';
     text += '--------------------------\n';
     text += output + '\n';
     text += '--------------------------';
 
-    this.state.childOutput += text;
-    this.forceUpdate();
+    this.setState((prevState, props) => {
+      return { childOutput: prevState.childOutput + text };
+    });
   }
 
   // clearChildOutput() {
@@ -78,7 +65,7 @@ export default class CodeEditor extends React.Component {
   //   }
   // }
 
-  handleCppCompile() {
+  handleCppCompile = () => {
     let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\s*((.|\n)*)\s*echo \$\?/;
     let gccExitCodeCaptureRe = /GCC_EXIT_CODE: (\d+)/;
 
@@ -90,7 +77,7 @@ export default class CodeEditor extends React.Component {
         let parser = new GccOutputParser();
         const gccExitCode = parseInt(gccExitCodeCaptureRe.exec(gccOutput)[1], 10);
         const errors = parser.parse(gccOutput);
-        // const annotations = parser.getErrorAnnotations(errors);
+        const errorAnnotations = parser.getErrorAnnotations(gccOutput);
 
         let result = {
           exitCode: gccExitCode,
@@ -103,6 +90,7 @@ export default class CodeEditor extends React.Component {
           errors.forEach(e => this.addOutputToDoc(
             'ERROR: ' + e.text + ' at line ' + e.row + ' column ' + e.column
           ));
+          this.setState({ annotations: errorAnnotations });
         } else {
           this.addOutputToDoc(regexMatchArr[2]);
         }
@@ -124,7 +112,7 @@ export default class CodeEditor extends React.Component {
     this.state.term.message.Send('tty0', data);
   }
 
-  handlePythonCompile() {
+  handlePythonCompile = () => {
     this.state.term.terms[0].SetCharReceiveListener(c => {
       this.state.output += c;
       if (this.state.output.split('\n').indexOf('~ $ echo $?') > 0) {
@@ -145,7 +133,7 @@ export default class CodeEditor extends React.Component {
     this.state.term.message.Send('tty0', data);
   }
 
-  handleSubmission() {
+  handleSubmission = () => {
     // if (this.state.clearOutput) {
     //   this.clearChildOutput();
     // }
@@ -158,34 +146,20 @@ export default class CodeEditor extends React.Component {
     }
   }
 
-	toggleEdit() {
-		this.state = {
-			text: this.state.text,
-			term: this.state.term,
-			toggled: !this.state.toggled,
-      childOutput: this.state.childOutput,
-      clearOutput: this.state.clearOutput,
-      language: this.state.language,
-		};
-
-		this.forceUpdate();
+	toggleEdit = () => {
+		this.setState((prevState, props) => {
+      return { toggled: !prevState.toggled };
+    });
 	}
 
-  handleQuit() {
+  handleQuit = () => {
     let quitCmd = '\x03';
     const data = quitCmd.split('').map(c => c.charCodeAt(0) >>> 0);
     this.state.term.message.Send('tty0', data);
   }
 
-  handleLanguageChange(newLanguage) {
-  		this.state = {
-  			text: this.state.text,
-  			term: this.state.term,
-  			toggled: this.state.toggled,
-        childOutput: this.state.childOutput,
-        clearOutput: this.state.clearOutput,
-        language: newLanguage,
-  		};
+  handleLanguageChange = (newLanguage) => {
+      this.setState({ language: newLanguage });
   }
 
   render() {
@@ -200,7 +174,8 @@ export default class CodeEditor extends React.Component {
             width={this.props.width}
             onChange={this.handleChange}
             value={this.state.text}
-  					readOnly={!this.state.toggled} />
+  					readOnly={!this.state.toggled}
+            annotations={this.state.annotations} />
         </div>
         <Output
           output={this.state.childOutput}
