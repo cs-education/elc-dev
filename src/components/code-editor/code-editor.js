@@ -23,7 +23,7 @@ export default class CodeEditor extends React.Component {
       childOutput: '',
       language: 'c_cpp',
       annotations: [],
-      // clearOutput: false
+      clearOutput: false
     };
   }
 
@@ -50,21 +50,15 @@ export default class CodeEditor extends React.Component {
     });
   }
 
-  // clearChildOutput() {
-  //   this.state.childOutput = 'empty';
-  //   this.forceUpdate();
-  // }
+  clearChildOutput = () => {
+    this.setState({ childOutput: '' });
+  }
 
-  // setClear(newValue) {
-  //   console.log('Changing to', newValue);
-  //   this.state = {
-  //     text: newValue,
-  //     term: this.state.term,
-	// 		toggled: this.state.toggled,
-  //     childOutput: this.state.childOutput,
-  //     // clearOutput: newValue
-  //   }
-  // }
+  toggleClear = () => {
+    this.setState((prevState, props) => {
+      return { clearOutput: !prevState.clearOutput };
+    });
+  }
 
   handleCppCompile = () => {
     let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\s*((.|\n)*)\s*echo \$\?/;
@@ -95,7 +89,7 @@ export default class CodeEditor extends React.Component {
         } else {
           this.addOutputToDoc(regexMatchArr[2]);
         }
-        
+
         this.state.output = '';
       }
     });
@@ -136,10 +130,9 @@ export default class CodeEditor extends React.Component {
   }
 
   handleSubmission = () => {
-    // if (this.state.clearOutput) {
-    //   this.clearChildOutput();
-    // }
-    //
+    if (this.state.clearOutput) {
+      this.clearChildOutput();
+    }
 
     if (this.state.language === 'c_cpp') {
       this.handleCppCompile();
@@ -181,7 +174,7 @@ export default class CodeEditor extends React.Component {
         </div>
         <Output
           output={this.state.childOutput}
-          setClear={this.setClear} />
+          toggleClear={this.toggleClear} />
         <CompilerControls
           onSubmit={this.handleSubmission}
 					toggleEdit={this.toggleEdit}
