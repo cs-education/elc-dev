@@ -6,7 +6,6 @@ import CodeEditor from './components/code-editor';
 
 function update(term) {
   let codeBlocks = document.getElementsByClassName('text');
-  //console.log(codeBlocks);
   let children = [];
   for (let i = 0; i < codeBlocks.length; i++) {
     let element = codeBlocks[i];
