@@ -1,6 +1,6 @@
 import React from 'react';
 
-const OutputControls = (props) => {
+export default (props) => {
   return (<div className="output-controls"></div>);
   // return (
   //   <div className="output-controls">
@@ -15,5 +15,3 @@ const OutputControls = (props) => {
   //   </div>
   // );
 }
-
-export default OutputControls;

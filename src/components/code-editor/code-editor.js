@@ -9,7 +9,7 @@ import 'brace/theme/monokai';
 import 'brace/theme/github';
 
 import CompilerControls from '../compiler-controls';
-import Output from '../output';
+import Output from '../output-component';
 import GccOutputParser from './gcc-output-parser';
 
 export default class CodeEditor extends React.Component {
@@ -95,6 +95,7 @@ export default class CodeEditor extends React.Component {
         } else {
           this.addOutputToDoc(regexMatchArr[2]);
         }
+        
         this.state.output = '';
       }
     });

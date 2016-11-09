@@ -2,7 +2,7 @@ import React from 'react';
 
 import OutputControls from './output-controls';
 
-const Output = (props) => {
+export default (props) => {
   // const setClear = () => props.setClear(true);
   // const setAppend = () => props.setClear(false);
   const setClear = () => console.log(true);
@@ -18,5 +18,3 @@ const Output = (props) => {
     </div>
   );
 }
-
-export default Output;
