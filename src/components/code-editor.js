@@ -4,6 +4,7 @@ import brace from 'brace';
 import $ from 'jquery';
 
 import 'brace/mode/c_cpp';
+import 'brace/mode/python';
 import 'brace/theme/monokai';
 import 'brace/theme/github';
 
@@ -20,6 +21,7 @@ export default class CodeEditor extends React.Component {
       term: this.props.term,
 			toggled: false,
       childOutput: '',
+      language: 'c_cpp',
       // clearOutput: false
     };
 
@@ -29,6 +31,7 @@ export default class CodeEditor extends React.Component {
     this.addCompilingLabel = this.addCompilingLabel.bind(this);
     this.addOutputToDoc = this.addOutputToDoc.bind(this);
     this.handleQuit = this.handleQuit.bind(this);
+    this.handleLanguageChange = this.handleLanguageChange.bind(this);
     // this.clearChildOutput = this.clearChildOutput.bind(this);
     // this.setClear = this.setClear.bind(this);
   }
@@ -39,6 +42,7 @@ export default class CodeEditor extends React.Component {
       term: this.state.term,
 			toggled: this.state.toggled,
       childOutput: this.state.childOutput,
+      language: this.state.language,
       // clearOutput: this.state.clearOutput
     };
   }
@@ -74,11 +78,7 @@ export default class CodeEditor extends React.Component {
   //   }
   // }
 
-  handleSubmission() {
-    // if (this.state.clearOutput) {
-    //   this.clearChildOutput();
-    // }
-
+  handleCppCompile() {
     let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\s*((.|\n)*)\s*echo \$\?/;
     let gccExitCodeCaptureRe = /GCC_EXIT_CODE: (\d+)/;
 
@@ -99,8 +99,6 @@ export default class CodeEditor extends React.Component {
           total: regexMatchArr
         };
 
-        console.log(result);
-
         if (errors.length > 0) {
           errors.forEach(e => this.addOutputToDoc(
             'ERROR: ' + e.text + ' at line ' + e.row + ' column ' + e.column
@@ -112,20 +110,52 @@ export default class CodeEditor extends React.Component {
       }
     });
 
-    let text = this.state.text;
-    let buf = new Buffer(text);
+    let buf = new Buffer(this.state.text);
     let jor1kFS = this.state.term.fs;
 
     jor1kFS.MergeBinaryFile('home/user/main.c', buf);
     this.addCompilingLabel();
 
-    let cmd = "clear && gcc -std=c99 main.c -o main\n";
-    const other = 'echo \\#\\#\\#GCC_COMPILE\\#\\#\\#;clear;pwd;' + cmd + ' echo GCC_EXIT_CODE: $?; echo \\#\\#\\#GCC_COMPILE_FINISHED\\#\\#\\#\n' + 'clear && ./main\n\necho $?\n';
+    const compileCmd = "clear && gcc -std=c99 main.c -o main\n";
+    const fullCmd = 'echo \\#\\#\\#GCC_COMPILE\\#\\#\\#;clear;pwd;' + compileCmd + ' echo GCC_EXIT_CODE: $?; echo \\#\\#\\#GCC_COMPILE_FINISHED\\#\\#\\#\n' + 'clear && ./main\n\necho $?\n';
 
-    const data = other.split('').map(c => c.charCodeAt(0) >>> 0);
+    const data = fullCmd.split('').map(c => c.charCodeAt(0) >>> 0);
 
     this.state.term.message.Send('tty0', data);
-    this.state.term.FocusTerm('tty0');
+  }
+
+  handlePythonCompile() {
+    this.state.term.terms[0].SetCharReceiveListener(c => {
+      this.state.output += c;
+      if (this.state.output.split('\n').indexOf('~ $ echo $?') > 0) {
+        this.addOutputToDoc(this.state.output);
+        this.state.output = '';
+      }
+    });
+
+    let buf = new Buffer(this.state.text);
+    let jor1kFS = this.state.term.fs;
+
+    jor1kFS.MergeBinaryFile('home/user/main.py', buf);
+    this.addCompilingLabel();
+
+    const compileCmd = "python main.py\necho $?\n"
+    const data = compileCmd.split('').map(c => c.charCodeAt(0) >>> 0);
+
+    this.state.term.message.Send('tty0', data);
+  }
+
+  handleSubmission() {
+    // if (this.state.clearOutput) {
+    //   this.clearChildOutput();
+    // }
+    //
+
+    if (this.state.language === 'c_cpp') {
+      this.handleCppCompile();
+    } else {
+      this.handlePythonCompile();
+    }
   }
 
 	toggleEdit() {
@@ -134,7 +164,8 @@ export default class CodeEditor extends React.Component {
 			term: this.state.term,
 			toggled: !this.state.toggled,
       childOutput: this.state.childOutput,
-      clearOutput: this.state.clearOutput
+      clearOutput: this.state.clearOutput,
+      language: this.state.language,
 		};
 
 		this.forceUpdate();
@@ -146,14 +177,25 @@ export default class CodeEditor extends React.Component {
     this.state.term.message.Send('tty0', data);
   }
 
+  handleLanguageChange(newLanguage) {
+  		this.state = {
+  			text: this.state.text,
+  			term: this.state.term,
+  			toggled: this.state.toggled,
+        childOutput: this.state.childOutput,
+        clearOutput: this.state.clearOutput,
+        language: newLanguage,
+  		};
+  }
+
   render() {
     return (
       <div className="editor">
         <div className="code-editor">
           <AceEditor
             name={this.props.id}
-            mode="c_cpp"
-            theme="github"
+            mode={this.state.language}
+            theme="monokai"
             height={this.props.height}
             width={this.props.width}
             onChange={this.handleChange}
@@ -166,7 +208,8 @@ export default class CodeEditor extends React.Component {
         <CompilerControls
           onSubmit={this.handleSubmission}
 					toggleEdit={this.toggleEdit}
-          handleQuit={this.handleQuit} />
+          handleQuit={this.handleQuit}
+          handleLanguageChange={this.handleLanguageChange} />
       </div>
     );
   }
@@ -175,9 +218,9 @@ export default class CodeEditor extends React.Component {
 // TODO
 
 // simple-ish stuff ----
+// filename, command-line args
 // user input
 // copy to clipboard
-// submit -> execute
 // skipping boilerplate & adding on edit&go
 // - preamble, postamble etc.
 // - live code attributes
@@ -188,7 +231,6 @@ export default class CodeEditor extends React.Component {
 
 // hardcore stuff ----
 // reduce preconfigured ram for jor1k
-// multiple languages
 // kill if hardware slow (running on phone)
 // fix web worker
 // auto check for syntax

@@ -24,3 +24,9 @@ pre.compiling {
   max-height: 100%;
   overflow-y: auto;
 }
+
+/*.compiler-controls {
+  border-style: solid;
+  border-width: thin;
+  padding-right: 0px;
+}*/
