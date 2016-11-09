@@ -1,12 +1,13 @@
-import Jor1k from '../../../jor1k/js/master/master';
-import LinuxTerm from '../../../jor1k/js/plugins/terminal-linux';
+import Jor1k from './jor1k/js/master/master';
+import LinuxTerm from './jor1k/js/plugins/terminal-linux';
 
-module.exports.initialize = function() {
-  var termTTY0 = new LinuxTerm('tty0');
-  var jor1k = new Jor1k(
+export default () => {
+  let termTTY0 = new LinuxTerm('tty0');
+  let webWorker = new Worker('jor1k-worker-min.js');
+  let jor1k = new Jor1k(
     {
       term: termTTY0,
-      path: '../jor1k/sys/or1k/',
+      path: './sys/or1k/',
       worker: new Worker('jor1k-worker-min.js'),
       fs: {
         basefsURL: 'basefs-compile.json',
@@ -30,4 +31,4 @@ module.exports.initialize = function() {
     }
   );
   return jor1k;
-};
+}

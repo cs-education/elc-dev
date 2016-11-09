@@ -8,9 +8,9 @@ import 'brace/mode/python';
 import 'brace/theme/monokai';
 import 'brace/theme/github';
 
-import CompilerControls from './compiler-controls';
-import Output from './output';
-import GccOutputParser from '../gcc-output-parser';
+import CompilerControls from '../compiler-controls';
+import Output from '../output';
+import GccOutputParser from './gcc-output-parser';
 
 export default class CodeEditor extends React.Component {
   constructor(props) {

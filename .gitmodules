@@ -1,3 +1,6 @@
-[submodule "jor1k"]
-	path = jor1k
+[submodule "src/components/terminal-component/jor1k"]
+	path = src/components/terminal-component/jor1k
 	url = https://github.com/s-macke/jor1k.git
+[submodule "public/sys"]
+	path = public/sys
+	url = https://github.com/s-macke/jor1k-sysroot.git

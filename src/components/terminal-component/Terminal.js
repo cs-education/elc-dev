@@ -1,6 +1,6 @@
 import React from 'react';
 
-import setup from './jor1k-setup';
+import Jor1kSetup from './jor1k-setup';
 
 export default class Terminal extends React.Component {
   constructor(props) {
@@ -8,7 +8,7 @@ export default class Terminal extends React.Component {
   }
 
   componentDidMount() {
-    let jor1k = setup.initialize();
+    let jor1k = Jor1kSetup();
     this.props.updateTerm(jor1k);
   }
 
