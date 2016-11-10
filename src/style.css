@@ -5,11 +5,6 @@
   border-width: thin;
 }
 
-pre.compiling {
-  /*float: left;*/
-  /*display: inline-block;*/
-}
-
 #term {
   /*position: absolute;*/
   /*visibility: hidden;*/
