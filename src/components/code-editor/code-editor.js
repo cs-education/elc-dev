@@ -23,7 +23,8 @@ export default class CodeEditor extends React.Component {
       childOutput: '',
       language: 'c_cpp',
       annotations: [],
-      clearOutput: false
+      clearOutput: false,
+      filename: 'main.c'
     };
   }
 
@@ -88,11 +89,11 @@ export default class CodeEditor extends React.Component {
     let buf = new Buffer(this.state.text);
     let jor1kFS = this.state.term.fs;
 
-    jor1kFS.MergeBinaryFile('home/user/main.c', buf);
+    jor1kFS.MergeBinaryFile(`home/user/${this.state.filename}.c`, buf);
     this.addCompilingLabel();
 
-    const compileCmd = "clear && gcc -std=c99 main.c -o main\n";
-    const fullCmd = 'echo \\#\\#\\#GCC_COMPILE\\#\\#\\#;clear;pwd;' + compileCmd + ' echo GCC_EXIT_CODE: $?; echo \\#\\#\\#GCC_COMPILE_FINISHED\\#\\#\\#\n' + 'clear && ./main\n\necho $?\n';
+    const compileCmd = `clear && gcc -std=c99 ${this.state.filename}.c -o ${this.state.filename}\n`;
+    const fullCmd = 'echo \\#\\#\\#GCC_COMPILE\\#\\#\\#;clear;pwd;' + compileCmd + ' echo GCC_EXIT_CODE: $?; echo \\#\\#\\#GCC_COMPILE_FINISHED\\#\\#\\#\n' + `clear && ./${this.state.filename}\n\necho $?\n`;
 
     const data = fullCmd.split('').map(c => c.charCodeAt(0) >>> 0);
 
@@ -111,10 +112,10 @@ export default class CodeEditor extends React.Component {
     let buf = new Buffer(this.state.text);
     let jor1kFS = this.state.term.fs;
 
-    jor1kFS.MergeBinaryFile('home/user/main.py', buf);
+    jor1kFS.MergeBinaryFile(`home/user/${this.state.filename}.py`, buf);
     this.addCompilingLabel();
 
-    const compileCmd = "python main.py\necho $?\n"
+    const compileCmd = `python ${this.state.filename}.py\necho $?\n`
     const data = compileCmd.split('').map(c => c.charCodeAt(0) >>> 0);
 
     this.state.term.message.Send('tty0', data);
@@ -154,6 +155,10 @@ export default class CodeEditor extends React.Component {
     });
   }
 
+  handleFileChange = (newFileName) => {
+    this.setState({ filename: newFileName });
+  }
+
   render() {
     return (
       <div className="editor">
@@ -176,7 +181,8 @@ export default class CodeEditor extends React.Component {
           onSubmit={this.handleSubmission}
 					toggleEdit={this.toggleEdit}
           handleQuit={this.handleQuit}
-          handleLanguageChange={this.handleLanguageChange} />
+          handleLanguageChange={this.handleLanguageChange}
+          handleFileChange={this.handleFileChange} />
       </div>
     );
   }

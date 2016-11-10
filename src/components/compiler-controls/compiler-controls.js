@@ -2,39 +2,36 @@ import React from 'react';
 
 import LanguageSelection from './language-selection';
 import CompilerButtons from './compiler-buttons';
+import Filename from './filename';
 
 export default class CompilerControls extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      toggled: false
-    };
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleEdit = this.handleEdit.bind(this);
-    this.handleQuit = this.handleQuit.bind(this);
-    this.handleLanguageChange = this.handleLanguageChange.bind(this);
+    this.state = { toggled: false };
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     this.props.onSubmit();
   }
 
-  handleEdit() {
+  handleEdit = () => {
     this.props.toggleEdit();
-    this.state = {
-        toggled: !this.state.toggled
-    };
-    this.forceUpdate();
+    this.setState((prevState, props) => {
+      return { toggled: !prevState.toggled };
+    });
   }
 
-  handleQuit() {
+  handleQuit = () => {
     this.props.handleQuit();
   }
 
-  handleLanguageChange(newLanguage) {
+  handleLanguageChange = (newLanguage) => {
     this.props.handleLanguageChange(newLanguage);
+  }
+
+  handleFileChange = (newFileName) => {
+    this.props.handleFileChange(newFileName);
   }
 
   render() {
@@ -47,6 +44,7 @@ export default class CompilerControls extends React.Component {
           handleQuit={this.handleQuit} />
         <LanguageSelection
           handleLanguageChange={this.handleLanguageChange} />
+        <Filename handleFileChange={this.handleFileChange} />
       </div>
     );
   }
