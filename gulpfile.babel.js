@@ -8,7 +8,7 @@ import config from './webpack.config.js';
 gulp.task('build', () => {
   return gulp.src('.')
     .pipe(webpack(config))
-    .pipe(gulp.dest('public'));
+    .pipe(gulp.dest('public/assets'));
 });
 
 gulp.task('serve', ['build'], () => {
@@ -43,7 +43,7 @@ gulp.task('prod', () => {
 
   return gulp.src('.')
     .pipe(webpack(myConfig))
-    .pipe(gulp.dest('public-prod'));
+    .pipe(gulp.dest('public-prod/assets'));
 });
 
 gulp.task('default', ['serve'])

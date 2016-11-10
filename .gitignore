@@ -2,5 +2,5 @@
 *.c
 npm-debug.log
 node_modules/
-public/*.js
-public-prod/
+public/assets/*.js
+public-prod/assets/*.js

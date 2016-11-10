@@ -1,11 +1,11 @@
 import Jor1k from './jor1k/js/master/master';
 import LinuxTerm from './jor1k/js/plugins/terminal-linux';
 
-import Worker from 'worker-loader!./jor1k/js/worker/worker';
+import MyWorker from 'worker-loader!./jor1k/js/worker/worker';
 
 export default () => {
   let termTTY0 = new LinuxTerm('tty0');
-  let webWorker = new Worker();
+  let webWorker = new MyWorker();
 
   return new Jor1k(
     {
