@@ -188,10 +188,15 @@ export default class CodeEditor extends React.Component {
   }
 }
 
+// COMPLETED
+// python support
+// filename editing
+// packaging
+// clear / append
+
 // TODO
 
 // simple-ish stuff ----
-// filename, command-line args
 // user input
 // copy to clipboard
 // skipping boilerplate & adding on edit&go
