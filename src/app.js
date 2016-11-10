@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom';
 import Terminal from './components/terminal-component';
 import CodeEditor from './components/code-editor';
 
+import './style.css';
+
 function update(term) {
   let codeBlocks = document.getElementsByClassName('text');
   let children = [];

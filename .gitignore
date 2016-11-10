@@ -2,4 +2,4 @@
 *.c
 npm-debug.log
 node_modules/
-public/app.js
+public/*.js

@@ -1,11 +1,13 @@
 import gulp from 'gulp';
 import webpack from 'webpack-stream';
+import WebpackCore from 'webpack';
 import connect from 'gulp-connect';
 import watch from 'gulp-watch';
+import config from './webpack.config.js';
 
 gulp.task('build', () => {
   return gulp.src('.')
-    .pipe(webpack(require('./webpack.config.js')))
+    .pipe(webpack(config))
     .pipe(gulp.dest('public'));
 });
 
@@ -24,3 +26,24 @@ gulp.task('watch', () => {
     gulp.start('build');
   });
 });
+
+gulp.task('prod', () => {
+  let myConfig = Object.create(config);
+  myConfig.plugins = myConfig.plugins.concat(
+    new WebpackCore.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new WebpackCore.optimize.LimitChunkCountPlugin({
+      maxChunks: 1
+    }),
+    new WebpackCore.optimize.DedupePlugin()
+  );
+
+  return gulp.src('.')
+    .pipe(webpack(myConfig))
+    .pipe(gulp.dest('public-prod'));
+});
+
+gulp.task('default', ['serve'])
