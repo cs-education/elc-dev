@@ -2,7 +2,6 @@ import React from 'react';
 
 import LanguageSelection from './language-selection';
 import CompilerButtons from './compiler-buttons';
-import Filename from './filename';
 
 export default class CompilerControls extends React.Component {
   constructor(props) {
@@ -30,10 +29,6 @@ export default class CompilerControls extends React.Component {
     this.props.handleLanguageChange(newLanguage);
   }
 
-  handleFileChange = (newFileName) => {
-    this.props.handleFileChange(newFileName);
-  }
-
   render() {
     return (
       <div className="compiler-controls">
@@ -44,7 +39,6 @@ export default class CompilerControls extends React.Component {
           handleQuit={this.handleQuit} />
         <LanguageSelection
           handleLanguageChange={this.handleLanguageChange} />
-        <Filename handleFileChange={this.handleFileChange} />
       </div>
     );
   }

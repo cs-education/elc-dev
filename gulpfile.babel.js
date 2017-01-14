@@ -22,7 +22,7 @@ gulp.task('serve', ['build'], () => {
 });
 
 gulp.task('watch', () => {
-  return watch('src/**/*.js', () => {
+  return watch('src/**/*', () => {
     gulp.start('build');
   });
 });
