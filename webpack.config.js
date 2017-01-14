@@ -8,7 +8,7 @@ var config = {
   entry: APP_DIR + '/app.js',
   output: {
     path: BUILD_DIR,
-    filename: 'app.js'
+    filename: 'jor1k-embed.js'
   },
   module: {
     loaders: [
