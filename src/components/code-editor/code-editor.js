@@ -9,7 +9,7 @@ import 'brace/theme/monokai';
 import 'brace/theme/github';
 
 import CompilerControls from '../compiler-controls';
-import Output from '../output-component';
+import Output from './output';
 import GccOutputParser from './gcc-output-parser';
 
 export default class CodeEditor extends React.Component {
@@ -149,16 +149,6 @@ export default class CodeEditor extends React.Component {
     this.state.term.message.Send('tty0', data);
   }
 
-  handleLanguageChange = (newLanguage) => {
-      this.setState({ language: newLanguage });
-  }
-
-  toggleClear = () => {
-    this.setState((prevState, props) => {
-      return { clearOutput: !prevState.clearOutput };
-    });
-  }
-
   render() {
     return (
       <div className="editor">
@@ -181,7 +171,7 @@ export default class CodeEditor extends React.Component {
           onSubmit={this.handleSubmission}
 					toggleEdit={this.toggleEdit}
           handleQuit={this.handleQuit}
-          handleLanguageChange={this.handleLanguageChange} />
+          clearOutput={this.clearChildOutput} />
       </div>
     );
   }
@@ -206,7 +196,6 @@ export default class CodeEditor extends React.Component {
 // about
 // reset code
 // pop-up terminal
-// clear button, default to append
 
 // hardcore stuff ----
 // reduce preconfigured ram for jor1k

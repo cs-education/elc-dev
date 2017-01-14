@@ -16,11 +16,16 @@ export default (props) => {
     props.handleQuit();
   }
 
+  const clearOutput = (e) => {
+    props.clearOutput();
+  }
+
   return (
     <div className="compiler-buttons">
       <button onClick={handleEdit}>{ props.toggled ? 'Lock Text' : 'Edit' }</button>
       <button onClick={handleSubmit}>Submit</button>
       <button onClick={handleQuit}>Quit Program</button>
+      <button onClick={clearOutput}>Clear Output</button>
     </div>
   );
 }

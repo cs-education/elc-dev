@@ -1,6 +1,5 @@
 import React from 'react';
 
-// import LanguageSelection from './language-selection';
 import CompilerButtons from './compiler-buttons';
 
 export default class CompilerControls extends React.Component {
@@ -25,9 +24,9 @@ export default class CompilerControls extends React.Component {
     this.props.handleQuit();
   }
 
-  // handleLanguageChange = (newLanguage) => {
-  //   this.props.handleLanguageChange(newLanguage);
-  // }
+  clearOutput = () => {
+    this.props.clearOutput();
+  }
 
   render() {
     return (
@@ -36,7 +35,8 @@ export default class CompilerControls extends React.Component {
           handleEdit={this.handleEdit}
           toggled={this.state.toggled}
           handleSubmit={this.handleSubmit}
-          handleQuit={this.handleQuit} />
+          handleQuit={this.handleQuit}
+          clearOutput={this.clearOutput} />
       </div>
     );
   }
