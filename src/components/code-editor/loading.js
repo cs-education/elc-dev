@@ -4,7 +4,6 @@ export default class Loading extends React.Component {
   constructor(props) {
     super(props);
     this.state = { dots: '' };
-    this.update = this.update.bind(this);
   }
 
   componentDidMount() {
@@ -13,14 +12,13 @@ export default class Loading extends React.Component {
   }
 
   update() {
-    let dots = this.state.dots;
-    if (dots.length === 3) {
-      dots = '';
-    } else {
-      dots += '.';
-    }
-    this.state = { dots: dots };
-    this.forceUpdate();
+    this.setState((prevState, props) => {
+      if (prevState.dots.length === 3) {
+        return { dots: '' };
+      } else {
+        return { dots: prevState + '.' };
+      }
+    });
   }
 
   render() {
