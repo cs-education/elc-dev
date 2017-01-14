@@ -16,12 +16,17 @@ export default class CodeEditor extends React.Component {
   constructor(props) {
     super(props);
 
+    let language = 'c_cpp';
+    if (this.props.language) {
+      language = this.props.language;
+    }
+
     this.state = {
       text: this.props.text,
       term: this.props.term,
 			toggled: false,
       childOutput: '',
-      language: 'c_cpp',
+      language: language,
       annotations: [],
       clearOutput: false,
     };

@@ -11,6 +11,8 @@ function update(term) {
   let children = [];
   for (let i = 0; i < codeBlocks.length; i++) {
     let element = codeBlocks[i];
+    let options = element.className.split(" ");
+
     let text = element.innerHTML
                       .replace(/&lt;/g, '<')
                       .replace(/&gt;/g, '>')
@@ -25,6 +27,7 @@ function update(term) {
           height="200px"
           id={editorId}
           term={term}
+          language={options[1]}
           text={text}/>
       </div>
     );

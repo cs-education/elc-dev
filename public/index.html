@@ -6,6 +6,7 @@
   <body>
     <div id="jor1k-embed"></div>
     <h2>Intro to C</h2> Every full C program begins inside a function called "main". A function is simply a collection of commands that do "something". The main function is always called when the program first executes. From main, we can call other functions, whether they be written by us or by others or use built-in language features. To access the standard functions that comes with your compiler, you need to include a header with the #include directive. What this does is effectively take everything in the header and paste it into your program. Let's look at a working program:
+
     <pre class="text">
 #include &lt;stdio.h&gt;
 
@@ -21,8 +22,9 @@ int main() {
   printf("I am a second piece of code\n");
   return 0;
 }</pre>
-<h2>Let's try threading :)</h2>
-<pre class="text">
+
+    <h2>Let's try threading :)</h2>
+    <pre class="text">
 #include &lt;stdio.h&gt;
 #include &lt;pthread.h&gt;
 #include &lt;stdlib.h&gt;
@@ -46,8 +48,29 @@ int main() {
 	pthread_join(tid1, NULL);
 	pthread_join(tid2, NULL);
 	return 0;
-}
-</pre>
+}</pre>
+
+    <h2>Let's try Python!</h2>
+    <pre class="text python">
+import time
+
+start_time = time.time()
+for _ in range(100):
+  print("Hello Python!")
+
+diff = time.time() - start_time
+
+print("This took " + str(diff) + " seconds")</pre>
+
+    <h2>Let's try no options</h2>
+    <pre class="text">
+#include &lt;stdio.h&gt;
+
+int main() {
+  printf("No options!\n");
+  return 0;
+}</pre>
+
     <script type="text/javascript" src="jor1k-embed.js"></script>
   </body>
 </html>
