@@ -6,8 +6,8 @@
 }
 
 #term {
-  /*position: absolute;*/
-  /*visibility: hidden;*/
+  position: absolute;
+  visibility: hidden;
 }
 
 .output {

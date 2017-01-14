@@ -24,7 +24,7 @@ export default class CodeEditor extends React.Component {
       language: 'c_cpp',
       annotations: [],
       clearOutput: false,
-      filename: 'main.c'
+      filename: 'main'
     };
   }
 
@@ -166,7 +166,7 @@ export default class CodeEditor extends React.Component {
           <AceEditor
             name={this.props.id}
             mode={this.state.language}
-            theme="monokai"
+            theme="github"
             height={this.props.height}
             width={this.props.width}
             onChange={this.handleChange}
@@ -189,9 +189,9 @@ export default class CodeEditor extends React.Component {
 }
 
 // COMPLETED
-// python support
-// filename editing
-// packaging
+// python support -> hide
+// filename editing -> remove
+// packaging -> dependency injection && inversion of control, local assets in browser fs
 // clear / append
 
 // TODO
@@ -203,15 +203,20 @@ export default class CodeEditor extends React.Component {
 // - preamble, postamble etc.
 // - live code attributes
 // filename & contents
-// multiple submits from different blocks
-
+// compiler options in preamble
+// about
+// reset code
+// pop-up terminal
+// clear button, default to append
 
 // hardcore stuff ----
 // reduce preconfigured ram for jor1k
 // kill if hardware slow (running on phone)
 // fix web worker
 // auto check for syntax
+// vm which starts up faster
 
 // paper stuff ----
 // gitbook
 // user studies
+// class settings, number of webpages that include c code
