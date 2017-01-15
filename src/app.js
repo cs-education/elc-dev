@@ -9,7 +9,7 @@ import './style.css';
 function update(term) {
   let codeBlocks = document.getElementsByClassName('text');
   let children = [];
-  
+
   for (let i = 0; i < codeBlocks.length; i++) {
     let element = codeBlocks[i];
     let options = element.className.split(" ");

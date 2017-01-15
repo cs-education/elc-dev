@@ -176,35 +176,3 @@ export default class CodeEditor extends React.Component {
     );
   }
 }
-
-// COMPLETED
-// python support -> hide
-// filename editing -> remove
-// packaging -> dependency injection && inversion of control, local assets in browser fs
-// clear / append
-
-// TODO
-
-// simple-ish stuff ----
-// user input
-// copy to clipboard
-// skipping boilerplate & adding on edit&go
-// - preamble, postamble etc.
-// - live code attributes
-// filename & contents
-// compiler options in preamble
-// about
-// reset code
-// pop-up terminal
-
-// hardcore stuff ----
-// reduce preconfigured ram for jor1k
-// kill if hardware slow (running on phone)
-// fix web worker
-// auto check for syntax
-// vm which starts up faster
-
-// paper stuff ----
-// gitbook
-// user studies
-// class settings, number of webpages that include c code
