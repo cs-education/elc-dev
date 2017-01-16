@@ -55,6 +55,7 @@ export default class CodeEditor extends React.Component {
   }
 
   handleCppCompile = () => {
+    this.setState({ annotations: null });
     let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\s*((.|\n)*)\s*echo \$\?/;
     let gccExitCodeCaptureRe = /GCC_EXIT_CODE: (\d+)/;
 
@@ -81,7 +82,6 @@ export default class CodeEditor extends React.Component {
           ));
           this.setState({ annotations: errorAnnotations });
         } else {
-          this.setState({ annotations: null });
           this.addOutputToDoc(regexMatchArr[2]);
         }
 
