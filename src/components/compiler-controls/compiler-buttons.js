@@ -1,4 +1,5 @@
 import React from 'react';
+import Clipboard from 'clipboard';
 
 export default (props) => {
   const handleEdit = (e) => {
@@ -17,8 +18,18 @@ export default (props) => {
   }
 
   const clearOutput = (e) => {
+    e.preventDefault();
     props.clearOutput();
   }
+
+  const copyToClipboard = (e) => {
+    e.preventDefault();
+    props.copyToClipboard();
+  }
+
+  let copyId = props.editor + '-copy';
+  let target = '#' + props.editor;
+  (new Clipboard('#' + copyId));
 
   return (
     <div className="compiler-buttons">
@@ -26,6 +37,12 @@ export default (props) => {
       <button onClick={handleSubmit}>Submit</button>
       <button onClick={handleQuit}>Quit Program</button>
       <button onClick={clearOutput}>Clear Output</button>
+      <button
+        id={copyId}
+        data-clipboard-target={target}
+        onClick={copyToClipboard}>
+        Copy to Clipboard
+      </button>
     </div>
   );
 }

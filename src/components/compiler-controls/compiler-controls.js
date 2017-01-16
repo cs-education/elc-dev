@@ -28,15 +28,21 @@ export default class CompilerControls extends React.Component {
     this.props.clearOutput();
   }
 
+  copyToClipboard = () => {
+    this.props.copyToClipboard();
+  }
+
   render() {
     return (
       <div className="compiler-controls">
         <CompilerButtons
+          editor={this.props.editor}
           handleEdit={this.handleEdit}
           toggled={this.state.toggled}
           handleSubmit={this.handleSubmit}
           handleQuit={this.handleQuit}
-          clearOutput={this.clearOutput} />
+          clearOutput={this.clearOutput}
+          copyToClipboard={this.copyToClipboard} />
       </div>
     );
   }

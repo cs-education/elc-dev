@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Terminal from './Terminal';
+import Terminal from './terminal';
 
 export default (props) => {
   return (

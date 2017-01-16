@@ -1,13 +1,12 @@
 {
   "name": "sysbuild-react",
   "version": "1.0.0",
-  "description": "React components for a functional Linux system/terminal and code editor for compilation and execution of C code therein",
+  "description": "Functional Linux system/terminal and code editor for compilation and running code in browser",
   "main": "src/app.js",
   "scripts": {
     "start": "gulp"
   },
   "keywords": [
-    "react",
     "terminal",
     "linux",
     "browser",

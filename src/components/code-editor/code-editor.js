@@ -1,11 +1,9 @@
 import React from 'react';
 import AceEditor from 'react-ace';
 import brace from 'brace';
-import $ from 'jquery';
 
 import 'brace/mode/c_cpp';
 import 'brace/mode/python';
-import 'brace/theme/monokai';
 import 'brace/theme/github';
 
 import CompilerControls from '../compiler-controls';
@@ -83,6 +81,7 @@ export default class CodeEditor extends React.Component {
           ));
           this.setState({ annotations: errorAnnotations });
         } else {
+          this.setState({ annotations: null });
           this.addOutputToDoc(regexMatchArr[2]);
         }
 
@@ -149,6 +148,20 @@ export default class CodeEditor extends React.Component {
     this.state.term.message.Send('tty0', data);
   }
 
+  copyToClipboard = () => {
+    let editor = brace.edit(this.props.id);
+    editor.selection.selectAll();
+    let text = editor.getSelectedText();
+    try {
+      let successful = document.execCommand('copy');
+      let msg = successful ? 'successful' : 'unsuccessful';
+      alert('Copy was ' + msg);
+    } catch (e) {
+      console.error('Unable to copy to cliboard', e);
+    }
+    editor.selection.clearSelection();
+  }
+
   render() {
     return (
       <div className="editor">
@@ -168,10 +181,12 @@ export default class CodeEditor extends React.Component {
           output={this.state.childOutput}
           toggleClear={this.toggleClear} />
         <CompilerControls
+          editor={this.props.id}
           onSubmit={this.handleSubmission}
 					toggleEdit={this.toggleEdit}
           handleQuit={this.handleQuit}
-          clearOutput={this.clearChildOutput} />
+          clearOutput={this.clearChildOutput}
+          copyToClipboard={this.copyToClipboard} />
       </div>
     );
   }
