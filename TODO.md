@@ -7,7 +7,7 @@
 ## TODO
 
 ### Simple-ish stuff
-- [ ] erase error annotations on fresh compile
+- [x] erase error annotations on fresh compile
 - [ ] user input
 - [x] copy to clipboard
 - [ ] skipping boilerplate & adding on edit&go
