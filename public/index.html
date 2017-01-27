@@ -71,6 +71,31 @@ int main() {
   return 0;
 }</pre>
 
+  <h2>Stdin</h2>
+  <pre class="text">
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+
+int
+main(void)
+{
+   FILE *stream = stdin;
+   char *line = NULL;
+   size_t len = 0;
+   ssize_t read;
+
+
+   while ((read = getline(&line, &len, stream)) != -1) {
+       printf("Retrieved line of length %zu :\n", read);
+       printf("%s", line);
+   }
+
+   free(line);
+   fclose(stream);
+   exit(EXIT_SUCCESS);
+}</pre>
+
     <script type="text/javascript" src="jor1k-embed.js"></script>
   </body>
 </html>
