@@ -43,7 +43,7 @@ gulp.task('prod', () => {
 
   return gulp.src('.')
     .pipe(webpack(myConfig))
-    .pipe(gulp.dest('public-prod/assets'));
+    .pipe(gulp.dest('public-prod/'));
 });
 
 gulp.task('default', ['serve'])
