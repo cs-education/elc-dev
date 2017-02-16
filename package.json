@@ -1,10 +1,11 @@
 {
-  "name": "sysbuild-react",
+  "name": "elc",
   "version": "1.0.0",
   "description": "Functional Linux system/terminal and code editor for compilation and running code in browser",
   "main": "src/app.js",
   "scripts": {
-    "start": "gulp"
+    "start": "gulp",
+    "prod": "gulp prod"
   },
   "keywords": [
     "terminal",

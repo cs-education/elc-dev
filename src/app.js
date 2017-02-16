@@ -38,5 +38,5 @@ function update(term) {
 
 ReactDOM.render(
   <Terminal width="600px" height="400px" updateTerm={update} />,
-  document.getElementById('jor1k-embed')
+  document.getElementById('elc')
 );
