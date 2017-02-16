@@ -17,3 +17,11 @@ To use this project in your own webpage, do the following:
 8. Write any code you wish to be transformed within `<pre class="code"></pre>` tags
   * You can specify which language you would like to use with either `c_cpp` or `python` in the `pre` tag's class name (e.g. `<pre class="code c_cpp">` for C support -- the app will default to C behavior if language not specified)
 9. Start your server and access your HTML pages -- if you followed everything, you should see live code in your browser!
+
+# Development and Examples
+You can try out the project with our examples to see how it can be used in your own webpage.
+
+1. Clone the repository with `git clone https://github.com/cs-education/elc-dev.git`
+2. Run `cd elc-dev`
+3. Run `npm start`. This will build the project and start a development server
+4. Go to `localhost:8000/public/` and click on any of the HTML files to see different ways to use the project
