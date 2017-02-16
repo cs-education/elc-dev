@@ -7,7 +7,7 @@ import CodeEditor from './components/code-editor';
 import './style.css';
 
 function update(term) {
-  let codeBlocks = document.getElementsByClassName('text');
+  let codeBlocks = document.getElementsByClassName('code');
   let children = [];
 
   for (let i = 0; i < codeBlocks.length; i++) {

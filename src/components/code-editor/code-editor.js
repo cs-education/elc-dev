@@ -56,7 +56,7 @@ export default class CodeEditor extends React.Component {
 
   handleCppCompile = () => {
     this.setState({ annotations: null });
-    let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\s*((.|\n)*)\s*echo \$\?/;
+    let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\n(\~\s\$ clear && \.\/main)\n((.|\n)*)\s*\~\s\$/
     let gccExitCodeCaptureRe = /GCC_EXIT_CODE: (\d+)/;
 
     this.state.term.terms[0].SetCharReceiveListener(c => {
@@ -82,7 +82,7 @@ export default class CodeEditor extends React.Component {
           ));
           this.setState({ annotations: errorAnnotations });
         } else {
-          this.addOutputToDoc(regexMatchArr[2]);
+          this.addOutputToDoc(regexMatchArr[3]);
         }
 
         this.state.output = '';
@@ -96,7 +96,7 @@ export default class CodeEditor extends React.Component {
     this.addCompilingLabel();
 
     const compileCmd = 'clear && gcc -std=c99 main.c -o main\n';
-    const fullCmd = 'echo \\#\\#\\#GCC_COMPILE\\#\\#\\#;clear;pwd;' + compileCmd + ' echo GCC_EXIT_CODE: $?; echo \\#\\#\\#GCC_COMPILE_FINISHED\\#\\#\\#\n' + 'clear && ./main\n\necho $?\n';
+    const fullCmd = 'echo \\#\\#\\#GCC_COMPILE\\#\\#\\#;clear;pwd;' + compileCmd + ' echo GCC_EXIT_CODE: $?; echo \\#\\#\\#GCC_COMPILE_FINISHED\\#\\#\\#\n' + 'clear && ./main\n';
 
     const data = fullCmd.split('').map(c => c.charCodeAt(0) >>> 0);
 
