@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <title>Lesson 1</title>
+  <body>
+    <div id="elc"></div>
+    <h2>Let's try threading :)</h2>
+    <pre class="code">
+#include &lt;stdio.h&gt;
+#include &lt;pthread.h&gt;
+#include &lt;stdlib.h&gt;
+
+static int global = 0;
+
+void* work(void *args) {
+	int working = *(int *) args;
+	for (int i = 0; i < 10; i++) {
+		printf("%d from t%d\n", global++, working);
+	}
+	return NULL;
+}
+
+int main() {
+	pthread_t tid1, tid2;
+	int t1 = 1;
+	int t2 = 2;
+	pthread_create(&amp;tid1, 0, work, &amp;t1);
+	pthread_create(&amp;tid2, 0, work, &amp;t2);
+	pthread_join(tid1, NULL);
+	pthread_join(tid2, NULL);
+	return 0;
+}</pre>
+
+    <script type="text/javascript" src="elc.js"></script>
+  </body>
+</html>
