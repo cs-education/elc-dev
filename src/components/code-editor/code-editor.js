@@ -162,6 +162,11 @@ export default class CodeEditor extends React.Component {
     editor.selection.clearSelection();
   }
 
+  sendInput = (input) => {
+    const data = input.split('').map(c => c.charCodeAt(0) >>> 0);
+    this.state.term.message.Send('tty0', data);
+  }
+
   render() {
     return (
       <div className="editor">
@@ -186,7 +191,8 @@ export default class CodeEditor extends React.Component {
 					toggleEdit={this.toggleEdit}
           handleQuit={this.handleQuit}
           clearOutput={this.clearChildOutput}
-          copyToClipboard={this.copyToClipboard} />
+          copyToClipboard={this.copyToClipboard}
+          sendInput={this.sendInput} />
       </div>
     );
   }

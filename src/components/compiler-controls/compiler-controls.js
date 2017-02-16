@@ -1,6 +1,7 @@
 import React from 'react';
 
 import CompilerButtons from './compiler-buttons';
+import Stdin from './stdin';
 
 export default class CompilerControls extends React.Component {
   constructor(props) {
@@ -32,6 +33,10 @@ export default class CompilerControls extends React.Component {
     this.props.copyToClipboard();
   }
 
+  sendInput = (input) => {
+    this.props.sendInput(input);
+  }
+
   render() {
     return (
       <div className="compiler-controls">
@@ -43,6 +48,8 @@ export default class CompilerControls extends React.Component {
           handleQuit={this.handleQuit}
           clearOutput={this.clearOutput}
           copyToClipboard={this.copyToClipboard} />
+        <Stdin
+          sendInput={this.sendInput} />
       </div>
     );
   }
