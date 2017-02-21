@@ -50884,7 +50884,7 @@
 
 
 	// module
-	exports.push([module.id, ".code-editor {\n  /*float:left;*/\n  display:inline-block;\n  border-style: solid;\n  border-width: thin;\n}\n\n/*#term {\n  position: absolute;\n  visibility: hidden;\n}*/\n\n.output {\n  /*float: right;*/\n  border-width: thin;\n  display: inline-block;\n  border-style: solid;\n  height: 200px;\n  max-height: 100%;\n  overflow-y: auto;\n}\n\n/*.compiler-controls {\n  border-style: solid;\n  border-width: thin;\n  padding-right: 0px;\n}*/\n", ""]);
+	exports.push([module.id, ".code-editor {\n  /*float:left;*/\n  display:inline-block;\n  border-style: solid;\n  border-width: thin;\n}\n\n#term {\n  position: absolute;\n  visibility: hidden;\n}\n\n.output {\n  /*float: right;*/\n  border-width: thin;\n  display: inline-block;\n  border-style: solid;\n  height: 200px;\n  max-height: 100%;\n  overflow-y: auto;\n}\n\n/*.compiler-controls {\n  border-style: solid;\n  border-width: thin;\n  padding-right: 0px;\n}*/\n", ""]);
 
 	// exports
 

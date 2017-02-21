@@ -5,10 +5,10 @@
   border-width: thin;
 }
 
-/*#term {
+#term {
   position: absolute;
   visibility: hidden;
-}*/
+}
 
 .output {
   /*float: right;*/

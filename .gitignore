@@ -2,6 +2,6 @@
 *.c
 npm-debug.log
 node_modules/
-public/*.js
-public-prod/*.js
-public-prod/
+src/
+.babelrc
+.jshintrc
