@@ -26,7 +26,6 @@ export default class CodeEditor extends React.Component {
       childOutput: '',
       language: language,
       annotations: [],
-      clearOutput: false,
       outputToggled: false
     };
   }
@@ -55,6 +54,7 @@ export default class CodeEditor extends React.Component {
   }
 
   clearChildOutput = () => {
+    this.setState({ outputToggled: false });
     this.setState({ childOutput: '' });
   }
 
@@ -129,10 +129,6 @@ export default class CodeEditor extends React.Component {
   }
 
   handleSubmission = () => {
-    if (this.state.clearOutput) {
-      this.clearChildOutput();
-    }
-
     if (this.state.language === 'c_cpp') {
       this.handleCppCompile();
     } else {
