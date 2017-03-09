@@ -27,6 +27,7 @@ export default class CodeEditor extends React.Component {
       language: language,
       annotations: [],
       clearOutput: false,
+      outputToggled: false
     };
   }
 
@@ -35,6 +36,9 @@ export default class CodeEditor extends React.Component {
   }
 
   addCompilingLabel = () => {
+    if (!this.state.outputToggled) {
+      this.setState({ outputToggled: true });
+    }
     let compileLabel = '\nCompiling main...\n';
     this.setState((prevState, props) => {
       return { childOutput: prevState.childOutput + compileLabel };
@@ -182,9 +186,10 @@ export default class CodeEditor extends React.Component {
   					readOnly={!this.state.toggled}
             annotations={this.state.annotations} />
         </div>
-        <Output
-          output={this.state.childOutput}
-          toggleClear={this.toggleClear} />
+        { this.state.outputToggled ?
+          <Output
+            output={this.state.childOutput}
+            toggleClear={this.toggleClear} /> : null }
         <CompilerControls
           editor={this.props.id}
           onSubmit={this.handleSubmission}
