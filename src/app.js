@@ -7,6 +7,12 @@ import CodeEditor from './components/code-editor';
 import './style.css';
 
 function update(term) {
+  let link = document.createElement('a');
+  let text = document.createTextNode('Project Homepage');
+  link.appendChild(text);
+  link.href = 'https://github.com/cs-education/elc-dev';
+  document.getElementById('elc').insertBefore(link, elc.firstChild);
+
   let codeBlocks = document.getElementsByClassName('code');
   let children = [];
 
