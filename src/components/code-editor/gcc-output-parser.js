@@ -11,7 +11,7 @@ const errorTypeMap = {
     make: 'make',
 };
 
-class GccOutputParser {
+class GCCOutputParser {
     parse(buildOutputStr) {
         let row;
         let col;
@@ -129,4 +129,25 @@ class GccOutputParser {
     }
 }
 
-export default GccOutputParser;
+export function gccParseable(outputStr) {
+  let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\n(\~\s\$ clear && \.\/main)\n((.|\n)*)\s*\~\s\$/
+  const regexMatchArr = gccOutputCaptureRe.exec(outputStr);
+  return regexMatchArr;
+}
+
+export function getErrors(regexMatchArr) {
+  const gccOutput = regexMatchArr[1];
+  let gccExitCodeCaptureRe = /GCC_EXIT_CODE: (\d+)/;
+  
+  let parser = new GCCOutputParser();
+  const gccExitCode = parseInt(gccExitCodeCaptureRe.exec(gccOutput)[1], 10);
+  const errors = parser.parse(gccOutput);
+  const errorAnnotations = parser.getErrorAnnotations(gccOutput);
+
+  let result = {
+    errors: errors,
+    errorAnnotations: errorAnnotations,
+    gccOutput: gccOutput,
+  };
+  return result;
+}
