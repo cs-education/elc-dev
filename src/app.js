@@ -5,13 +5,16 @@ import Terminal from './components/terminal-component';
 import CodeEditor from './components/code-editor';
 
 import './style.css';
+import gh from './github.png';
 
 function update(term) {
-  let link = document.createElement('a');
-  let text = document.createTextNode('Project Homepage');
-  link.appendChild(text);
-  link.href = 'https://github.com/cs-education/elc-dev';
-  document.getElementById('elc').insertBefore(link, elc.firstChild);
+  let ref = document.createElement('a');
+  let img = document.createElement('img');
+  img.src = gh;
+  ref.appendChild(img);
+  ref.href = 'https://github.com/cs-education/elc-dev';
+  document.body.appendChild(ref);
+
 
   let codeBlocks = document.getElementsByClassName('code');
   let children = [];
