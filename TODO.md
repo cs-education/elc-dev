@@ -31,3 +31,7 @@
 - [ ] gitbook
 - [x] user studies
 - [ ] class settings, number of webpages that include c code
+
+
+- echo on same line
+- acknowledge SO page, look at copyright notice
