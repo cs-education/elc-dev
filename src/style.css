@@ -1,7 +1,9 @@
 .code-editor {
   display:inline-block;
-  border-style: solid;
   border-width: thin;
+  /*padding: 9.5px;*/
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 /*#term {
@@ -11,12 +13,16 @@
 
 .output {
   /*float: right;*/
+  /*padding: 9.5px;*/
+  border-radius: 4px;
+  border: 1px solid #ccc;
   border-width: thin;
   display: inline-block;
-  border-style: solid;
   height: 200px;
   max-height: 100%;
   overflow-y: auto;
+  background-color: #f5f5f5;
+
 }
 
 /*.compiler-controls {
