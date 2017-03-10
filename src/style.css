@@ -1,7 +1,6 @@
 .code-editor {
   display:inline-block;
   border-width: thin;
-  /*padding: 9.5px;*/
   border-radius: 4px;
   border: 1px solid #ccc;
 }
@@ -12,8 +11,9 @@
 }*/
 
 .output {
-  /*float: right;*/
-  /*padding: 9.5px;*/
+  margin-left: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   border-radius: 4px;
   border: 1px solid #ccc;
   border-width: thin;
@@ -26,7 +26,4 @@
 }
 
 /*.compiler-controls {
-  border-style: solid;
-  border-width: thin;
-  padding-right: 0px;
 }*/

@@ -38,7 +38,7 @@ export default class CodeEditor extends React.Component {
     if (!this.state.outputToggled) {
       this.setState({ outputToggled: true });
     }
-    let compileLabel = '\nCompiling main...\n';
+    let compileLabel = '\nRunning program...\n';
     this.setState((prevState, props) => {
       return { childOutput: prevState.childOutput + compileLabel };
     });
