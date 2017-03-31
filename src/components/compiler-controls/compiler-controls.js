@@ -6,27 +6,14 @@ import Stdin from './stdin';
 export default class CompilerControls extends React.Component {
   constructor(props) {
     super(props);
-
-    this.state = { toggled: false };
   }
 
   handleSubmit = () => {
     this.props.onSubmit();
   }
 
-  handleEdit = () => {
-    this.props.toggleEdit();
-    this.setState((prevState, props) => {
-      return { toggled: !prevState.toggled };
-    });
-  }
-
   handleQuit = () => {
     this.props.handleQuit();
-  }
-
-  clearOutput = () => {
-    this.props.clearOutput();
   }
 
   copyToClipboard = () => {
@@ -42,12 +29,10 @@ export default class CompilerControls extends React.Component {
       <div className="compiler-controls">
         <CompilerButtons
           editor={this.props.editor}
-          handleEdit={this.handleEdit}
-          toggled={this.state.toggled}
           handleSubmit={this.handleSubmit}
           handleQuit={this.handleQuit}
-          clearOutput={this.clearOutput}
-          copyToClipboard={this.copyToClipboard} />
+          copyToClipboard={this.copyToClipboard}
+          reset={this.props.reset} />
         <Stdin
           sendInput={this.sendInput} />
       </div>

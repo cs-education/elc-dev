@@ -20,14 +20,18 @@ export default class CodeEditor extends React.Component {
     }
 
     this.state = {
+      code: this.props.text,
       text: this.props.text,
       term: this.props.term,
-			toggled: false,
       childOutput: '',
       language: language,
       annotations: [],
       outputToggled: false
     };
+  }
+
+  handleReset = () => {
+    this.setState({ text: this.state.code });
   }
 
   handleChange = (newValue) => {
@@ -130,12 +134,6 @@ export default class CodeEditor extends React.Component {
     }
   }
 
-	toggleEdit = () => {
-		this.setState((prevState, props) => {
-      return { toggled: !prevState.toggled };
-    });
-	}
-
   handleQuit = () => {
     let quitCmd = '\x03';
     const data = quitCmd.split('').map(c => c.charCodeAt(0) >>> 0);
@@ -173,21 +171,23 @@ export default class CodeEditor extends React.Component {
             width={this.props.width}
             onChange={this.handleChange}
             value={this.state.text}
-  					readOnly={!this.state.toggled}
             annotations={this.state.annotations} />
         </div>
         { this.state.outputToggled ?
           <Output
             output={this.state.childOutput}
+            clearOutput={this.clearChildOutput}
             toggleClear={this.toggleClear} /> : null }
-        <CompilerControls
-          editor={this.props.id}
-          onSubmit={this.handleSubmission}
-					toggleEdit={this.toggleEdit}
-          handleQuit={this.handleQuit}
-          clearOutput={this.clearChildOutput}
-          copyToClipboard={this.copyToClipboard}
-          sendInput={this.sendInput} />
+        <div className="compiler-controls">
+          <CompilerControls
+            editor={this.props.id}
+            onSubmit={this.handleSubmission}
+  					toggleEdit={this.toggleEdit}
+            handleQuit={this.handleQuit}
+            copyToClipboard={this.copyToClipboard}
+            sendInput={this.sendInput}
+            reset={this.handleReset} />
+        </div>
       </div>
     );
   }
