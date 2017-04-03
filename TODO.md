@@ -49,3 +49,5 @@
 - license w/ all names, simplified bsd2
 - prod repo
 - newest jor1k repo
+
+- investigate use of manifest.json for android apps
