@@ -8,3 +8,5 @@ src/
 .gitmodules
 *.md
 webpack.config.js
+gulpfile.babel.js
+public-prod/

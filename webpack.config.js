@@ -20,7 +20,12 @@ var config = {
       {
         test: /\.css$/,
         include: APP_DIR,
-        loader: "style-loader!css-loader"
+        loader: 'style-loader!css-loader'
+      },
+      {
+        test: /\.png$/,
+        include: APP_DIR,
+        loader: 'url-loader?mimetype=image/png'
       }
     ],
     resolve: {

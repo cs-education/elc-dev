@@ -3,10 +3,15 @@ import ReactDOM from 'react-dom';
 
 import Terminal from './components/terminal-component';
 import CodeEditor from './components/code-editor';
+import Credits from './components/credits';
 
-import './style.css';
+import './assets/style.css';
 
 function update(term) {
+  let credits = document.createElement('div');
+  credits.id = 'credits';
+  document.body.appendChild(credits);
+
   let codeBlocks = document.getElementsByClassName('code');
   let children = [];
 
@@ -34,6 +39,8 @@ function update(term) {
     );
     ReactDOM.render(children[i], element);
   }
+
+  ReactDOM.render(<Credits />, document.getElementById('credits'));
 }
 
 ReactDOM.render(

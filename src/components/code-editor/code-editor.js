@@ -8,7 +8,7 @@ import 'brace/theme/github';
 
 import CompilerControls from '../compiler-controls';
 import Output from './output';
-import GccOutputParser from './gcc-output-parser';
+import { gccParseable, getErrors } from './gcc-output-parser';
 
 export default class CodeEditor extends React.Component {
   constructor(props) {
@@ -20,14 +20,18 @@ export default class CodeEditor extends React.Component {
     }
 
     this.state = {
+      code: this.props.text,
       text: this.props.text,
       term: this.props.term,
-			toggled: false,
       childOutput: '',
       language: language,
       annotations: [],
-      clearOutput: false,
+      outputToggled: false
     };
+  }
+
+  handleReset = () => {
+    this.setState({ text: this.state.code });
   }
 
   handleChange = (newValue) => {
@@ -35,7 +39,10 @@ export default class CodeEditor extends React.Component {
   }
 
   addCompilingLabel = () => {
-    let compileLabel = '\nCompiling main...\n';
+    if (!this.state.outputToggled) {
+      this.setState({ outputToggled: true });
+    }
+    let compileLabel = '\nRunning program...\n';
     this.setState((prevState, props) => {
       return { childOutput: prevState.childOutput + compileLabel };
     });
@@ -51,30 +58,25 @@ export default class CodeEditor extends React.Component {
   }
 
   clearChildOutput = () => {
+    this.setState({ outputToggled: false });
     this.setState({ childOutput: '' });
   }
 
   handleCppCompile = () => {
     this.setState({ annotations: null });
-    let gccOutputCaptureRe = /###GCC_COMPILE###\s*([\S\s]*?)\s*###GCC_COMPILE_FINISHED###\n(\~\s\$ clear && \.\/main)\n((.|\n)*)\s*\~\s\$/
-    let gccExitCodeCaptureRe = /GCC_EXIT_CODE: (\d+)/;
+    this.state.output = '';
 
     this.state.term.terms[0].SetCharReceiveListener(c => {
-      this.state.output += c;
-      const regexMatchArr = gccOutputCaptureRe.exec(this.state.output);
-      if (regexMatchArr) {
-        const gccOutput = regexMatchArr[1];
-        let parser = new GccOutputParser();
-        const gccExitCode = parseInt(gccExitCodeCaptureRe.exec(gccOutput)[1], 10);
-        const errors = parser.parse(gccOutput);
-        const errorAnnotations = parser.getErrorAnnotations(gccOutput);
+      this.setState((prevState, props) => {
+        return { output: prevState.output + c };
+      });
 
-        let result = {
-          exitCode: gccExitCode,
-          annotations: errors,
-          gccOutput: gccOutput,
-          total: regexMatchArr
-        };
+      let output = this.state.output;
+      let regexMatchArr = gccParseable(output);
+      if (regexMatchArr) {
+        let result = getErrors(regexMatchArr);
+        let errors = result.errors;
+        let errorAnnotations = result.errorAnnotations;
 
         if (errors.length > 0) {
           errors.forEach(e => this.addOutputToDoc(
@@ -125,22 +127,12 @@ export default class CodeEditor extends React.Component {
   }
 
   handleSubmission = () => {
-    if (this.state.clearOutput) {
-      this.clearChildOutput();
-    }
-
     if (this.state.language === 'c_cpp') {
       this.handleCppCompile();
     } else {
       this.handlePythonCompile();
     }
   }
-
-	toggleEdit = () => {
-		this.setState((prevState, props) => {
-      return { toggled: !prevState.toggled };
-    });
-	}
 
   handleQuit = () => {
     let quitCmd = '\x03';
@@ -179,20 +171,23 @@ export default class CodeEditor extends React.Component {
             width={this.props.width}
             onChange={this.handleChange}
             value={this.state.text}
-  					readOnly={!this.state.toggled}
             annotations={this.state.annotations} />
         </div>
-        <Output
-          output={this.state.childOutput}
-          toggleClear={this.toggleClear} />
-        <CompilerControls
-          editor={this.props.id}
-          onSubmit={this.handleSubmission}
-					toggleEdit={this.toggleEdit}
-          handleQuit={this.handleQuit}
-          clearOutput={this.clearChildOutput}
-          copyToClipboard={this.copyToClipboard}
-          sendInput={this.sendInput} />
+        { this.state.outputToggled ?
+          <Output
+            output={this.state.childOutput}
+            clearOutput={this.clearChildOutput}
+            toggleClear={this.toggleClear} /> : null }
+        <div className="compiler-controls">
+          <CompilerControls
+            editor={this.props.id}
+            onSubmit={this.handleSubmission}
+  					toggleEdit={this.toggleEdit}
+            handleQuit={this.handleQuit}
+            copyToClipboard={this.copyToClipboard}
+            sendInput={this.sendInput}
+            reset={this.handleReset} />
+        </div>
       </div>
     );
   }
