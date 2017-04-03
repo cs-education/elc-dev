@@ -10,3 +10,4 @@ src/
 webpack.config.js
 gulpfile.babel.js
 public-prod/
+package.json
