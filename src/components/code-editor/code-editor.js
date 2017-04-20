@@ -64,16 +64,16 @@ export default class CodeEditor extends React.Component {
 
   handleCppCompile = () => {
     this.setState({ annotations: null });
-    this.state.output = '';
 
     this.state.term.terms[0].SetCharReceiveListener(c => {
       this.setState((prevState, props) => {
-        return { output: prevState.output + c };
+        return { childOutput: prevState.childOutput + c };
       });
 
-      let output = this.state.output;
+      let output = this.state.childOutput;
       let regexMatchArr = gccParseable(output);
       if (regexMatchArr) {
+        console.log("MATCHED");
         let result = getErrors(regexMatchArr);
         let errors = result.errors;
         let errorAnnotations = result.errorAnnotations;
@@ -84,10 +84,8 @@ export default class CodeEditor extends React.Component {
           ));
           this.setState({ annotations: errorAnnotations });
         } else {
-          this.addOutputToDoc(regexMatchArr[3]);
+          // this.addOutputToDoc(regexMatchArr[3]);
         }
-
-        this.state.output = '';
       }
     });
 
@@ -173,11 +171,13 @@ export default class CodeEditor extends React.Component {
             value={this.state.text}
             annotations={this.state.annotations} />
         </div>
+        <div className="output">
         { this.state.outputToggled ?
           <Output
             output={this.state.childOutput}
             clearOutput={this.clearChildOutput}
             toggleClear={this.toggleClear} /> : null }
+        </div>
         <div className="compiler-controls">
           <CompilerControls
             editor={this.props.id}
