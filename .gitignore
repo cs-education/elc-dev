@@ -2,6 +2,5 @@
 *.c
 npm-debug.log
 node_modules/
-public/*.js
-public-prod/*.js
 public-prod/
+public/elc.js

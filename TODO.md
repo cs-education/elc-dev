@@ -42,7 +42,6 @@
 - double click to load editor/runner, static by default
 - reset button
 - execute -> quit when prog starts
-- graphical buttons
 - stdin -> keyboard input
 - try using term for prog output
 - todo -> term match background color
