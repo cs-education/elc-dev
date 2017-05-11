@@ -73,19 +73,15 @@ export default class CodeEditor extends React.Component {
       let output = this.state.childOutput;
       let regexMatchArr = gccParseable(output);
       if (regexMatchArr) {
-        console.log("MATCHED");
         let result = getErrors(regexMatchArr);
         let errors = result.errors;
         let errorAnnotations = result.errorAnnotations;
 
         if (errors.length > 0) {
-          errors.forEach(e => this.addOutputToDoc(
-            'ERROR: ' + e.text + ' at line ' + e.row + ' column ' + e.column
-          ));
           this.setState({ annotations: errorAnnotations });
-        } else {
-          // this.addOutputToDoc(regexMatchArr[3]);
         }
+        var outputDiv = document.getElementById(this.props.id + "-output");
+        outputDiv.scrollTop = outputDiv.scrollHeight;
       }
     });
 
@@ -95,7 +91,7 @@ export default class CodeEditor extends React.Component {
     jor1kFS.MergeBinaryFile('home/user/main.c', buf);
     this.addCompilingLabel();
 
-    const compileCmd = 'clear && gcc -std=c99 main.c -o main\n';
+    const compileCmd = 'rm -f main && clear && gcc -std=c99 main.c -o main\n';
     const fullCmd = 'echo \\#\\#\\#GCC_COMPILE\\#\\#\\#;clear;pwd;' + compileCmd + ' echo GCC_EXIT_CODE: $?; echo \\#\\#\\#GCC_COMPILE_FINISHED\\#\\#\\#\n' + 'clear && ./main\n';
 
     const data = fullCmd.split('').map(c => c.charCodeAt(0) >>> 0);
@@ -174,6 +170,7 @@ export default class CodeEditor extends React.Component {
         <div className="output">
         { this.state.outputToggled ?
           <Output
+            id={this.props.id + "-output"}
             output={this.state.childOutput}
             clearOutput={this.clearChildOutput}
             toggleClear={this.toggleClear} /> : null }

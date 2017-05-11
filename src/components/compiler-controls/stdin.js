@@ -12,7 +12,6 @@ export default class Stdin extends React.Component {
   }
 
   handleSubmit = (e) => {
-    console.log(this.state.input);
     //sanitize(input);
     e.preventDefault();
     this.props.sendInput(this.state.input + '\n');
