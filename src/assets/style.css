@@ -5,10 +5,10 @@
   border: 1px solid #ccc;
 }
 
-/*#term {
+#term {
   position: absolute;
   visibility: hidden;
-}*/
+}
 
 .output {
   margin-left: 10px;

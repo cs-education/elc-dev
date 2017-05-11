@@ -25,3 +25,6 @@ You can try out the project with our examples to see how it can be used in your 
 2. Run `cd elc-dev`
 3. Run `npm start`. This will build the project and start a development server
 4. Go to `localhost:8000/public/` and click on any of the HTML files to see different ways to use the project
+
+# Other
+You can check out my senior thesis under `paper.pdf` for a more in-depth discussion on the project.
