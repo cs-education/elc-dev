@@ -28,3 +28,4 @@ You can try out the project with our examples to see how it can be used in your 
 
 # Other
 You can check out my senior thesis under `paper.pdf` for a more in-depth discussion on the project.
+In addition, we have live demos and the production version of the files in [this](https://github.com/cs-education/elc-prod/) repo.
